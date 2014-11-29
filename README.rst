@@ -4,7 +4,7 @@ pyinfoblox - Infoblox WAPI module for Python
 pyinfoblox is a Python module for interfacing with the Infoblox WAPI.
 
 For more information about the Infoblox WAPI, please refer to the
-`Infoblox WAPI documentation <https://ipam.illinois.edu/wapidoc/`_.
+`Infoblox WAPI documentation <https://ipam.illinois.edu/wapidoc/>`_.
 
 pyinfoblox is Open Source and licensed under the
 `BSD License <http://opensource.org/licenses/BSD-2-Clause>`_.
@@ -44,7 +44,8 @@ Github repository simply execute these commands instead:
 Examples
 ========
 
-The first thing we do is to instantiate a new ``InfobloxWAPI`` object.
+The first thing we do when using ``pyinfoblox`` is to instantiate a
+new ``InfobloxWAPI`` object.
 
 .. code-block:: python
 
@@ -81,7 +82,10 @@ Here is how to create a new Infoblox network:
 
 .. code-block:: python
 
-   >>> objref = infoblox.network.create(network='192.168.1.0/24', comment='This is my test network')
+   >>> objref = infoblox.network.create(
+   ...    network='192.168.1.0/24',
+   ...    comment='This is my test network'
+   ...)
    >>> print(objref)
    u'network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
 
@@ -108,7 +112,9 @@ Just make sure to pass the object reference when deleting objects.
 
 .. code-block:: python
 
-   >>> infoblox.network.delete('network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default')
+   >>> infoblox.network.delete(
+   ...    objref='network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
+   ...)
    u'network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
 
 As a last example we will see how to call functions on

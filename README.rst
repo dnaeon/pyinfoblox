@@ -83,9 +83,9 @@ Here is how to create a new Infoblox network:
 .. code-block:: python
 
    >>> objref = infoblox.network.create(
-   ...    network='192.168.1.0/24',
-   ...    comment='This is my test network'
-   ...)
+   ...     network='192.168.1.0/24',
+   ...     comment='This is my test network'
+   ... )
    >>> print(objref)
    u'network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
 
@@ -113,8 +113,8 @@ Just make sure to pass the object reference when deleting objects.
 .. code-block:: python
 
    >>> infoblox.network.delete(
-   ...    objref='network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
-   ...)
+   ...     objref='network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
+   ... )
    u'network/ZG5zLm5ldHdvcmskMTkyLjE2OC4xLjAvMjQvMA:192.168.1.0/24/default'
 
 As a last example we will see how to call functions on

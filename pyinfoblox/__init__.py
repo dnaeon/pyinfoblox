@@ -178,3 +178,22 @@ class InfobloxWAPIObject(object):
             raise InfobloxWAPIException(r.content)
 
         return r.json()
+
+    def function(self, objref, **kwargs):
+        """
+        Call a function on an Infoblox object
+
+        Args:
+            objref (str): Infoblox object reference
+
+        Raises:
+            InfobloxWAPIException
+
+        """
+        r = self.session.post(self.wapi + objref, data=kwargs)
+
+        if r.status_code != requests.codes.ok:
+            raise InfobloxWAPIException(r.content)
+
+        return r.json()
+

@@ -1,6 +1,14 @@
 pyinfoblox - Infoblox WAPI module for Python
 ============================================
 
+.. image:: https://pypip.in/version/pyinfoblox/badge.svg
+    :target: https://pypi.python.org/pypi/pyinfoblox/
+    :alt: Latest Version
+
+.. image:: https://pypip.in/download/pyinfoblox/badge.svg
+    :target: https://pypi.python.org/pypi/pyinfoblox/
+    :alt: Downloads
+
 pyinfoblox is a Python module for interfacing with the Infoblox WAPI.
 
 For more information about the Infoblox WAPI, please refer to the

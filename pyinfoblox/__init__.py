@@ -77,7 +77,7 @@ class InfobloxWAPI(object):
         # In order to use an Infoblox 'record' object replace the
         # colon character with underscore in your call, e.g. 'record_a'
         if 'record' in attr:
-            attr = attr.replace('_', ':')
+            attr = attr.replace('_', ':', 1)
 
         return InfobloxWAPIObject(
             objtype=attr,

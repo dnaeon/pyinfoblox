@@ -27,6 +27,8 @@ Infoblox WAPI module for Python
 
 """
 
+import json
+
 import requests
 
 
@@ -151,7 +153,7 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.put(self.wapi + objref, data=kwargs)
+        r = self.session.put(self.wapi + objref, data=json.dumps(kwargs))
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)

@@ -115,7 +115,10 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.get(self.wapi + self.objtype, data=json.dumps(kwargs))
+        r = self.session.get(
+            self.wapi + self.objtype,
+            data=json.dumps(kwargs)
+        )
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)
@@ -133,7 +136,10 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.post(self.wapi + self.objtype, data=json.dumps(kwargs))
+        r = self.session.post(
+            self.wapi + self.objtype,
+            data=json.dumps(kwargs)
+        )
 
         if r.status_code != requests.codes.CREATED:
             raise InfobloxWAPIException(r.content)
@@ -154,7 +160,10 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.put(self.wapi + objref, data=json.dumps(kwargs))
+        r = self.session.put(
+            self.wapi + objref,
+            data=json.dumps(kwargs)
+        )
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)
@@ -193,10 +202,12 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.post(self.wapi + objref, data=json.dumps(kwargs))
+        r = self.session.post(
+            self.wapi + objref,
+            data=json.dumps(kwargs)
+        )
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)
 
         return r.json()
-

@@ -61,6 +61,7 @@ class InfobloxWAPI(object):
         self.wapi = wapi
         self.session = requests.Session()
         self.session.auth = (self.username, self.password)
+        self.session.headers.update({'content-type': 'application/json'})
         self.session.verify = verify
 
     def __getattr__(self, attr):
@@ -114,7 +115,7 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.get(self.wapi + self.objtype, data=kwargs)
+        r = self.session.get(self.wapi + self.objtype, data=json.dumps(kwargs))
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)
@@ -132,7 +133,7 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.post(self.wapi + self.objtype, data=kwargs)
+        r = self.session.post(self.wapi + self.objtype, data=json.dumps(kwargs))
 
         if r.status_code != requests.codes.CREATED:
             raise InfobloxWAPIException(r.content)
@@ -192,7 +193,7 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.post(self.wapi + objref, data=kwargs)
+        r = self.session.post(self.wapi + objref, data=json.dumps(kwargs))
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)

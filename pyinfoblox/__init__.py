@@ -117,7 +117,7 @@ class InfobloxWAPIObject(object):
         """
         r = self.session.get(
             self.wapi + self.objtype,
-            data=json.dumps(kwargs)
+            params=kwargs
         )
 
         if r.status_code != requests.codes.ok:

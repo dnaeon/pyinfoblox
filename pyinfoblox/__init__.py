@@ -136,8 +136,16 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        # Parameters with leading underscores are options, and
+        # must be sent as params, not data
+        params = {}
+        for k, v in kwargs.items():
+            if k.startswith('_'):
+                params[k] = kwargs.pop(k)
+
         r = self.session.post(
             self.wapi + self.objtype,
+            params=params,
             data=json.dumps(kwargs)
         )
 
@@ -160,8 +168,16 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        # Parameters with leading underscores are options, and
+        # must be sent as params, not data
+        params = {}
+        for k, v in kwargs.items():
+            if k.startswith('_'):
+                params[k] = kwargs.pop(k)
+
         r = self.session.put(
             self.wapi + objref,
+            params=params,
             data=json.dumps(kwargs)
         )
 
@@ -202,8 +218,16 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        # Parameters with leading underscores are options, and
+        # must be sent as params, not data
+        params = {}
+        for k, v in kwargs.items():
+            if k.startswith('_'):
+                params[k] = kwargs.pop(k)
+
         r = self.session.post(
             self.wapi + objref,
+            params=params,
             data=json.dumps(kwargs)
         )
 

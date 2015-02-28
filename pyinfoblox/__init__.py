@@ -104,19 +104,20 @@ class InfobloxWAPIObject(object):
         self.wapi = wapi
         self.session = session
 
-    def get(self, **kwargs):
+    def get(self, objref=None, **kwargs):
         """
         Get Infoblox objects
 
         Returns:
-            A list of Infoblox objects
+            With objref, one Infoblox object,
+            in search form, a list of Infoblox objects
 
         Raises:
             InfobloxWAPIException
 
         """
         r = self.session.get(
-            self.wapi + self.objtype,
+            self.wapi + (objref if objref is not None else self.objtype),
             params=kwargs
         )
 
@@ -136,8 +137,16 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        # Parameters with leading underscores are options, and
+        # must be sent as params, not data
+        params = {}
+        for k, v in kwargs.items():
+            if k.startswith('_'):
+                params[k] = kwargs.pop(k)
+
         r = self.session.post(
             self.wapi + self.objtype,
+            params=params,
             data=json.dumps(kwargs)
         )
 
@@ -160,8 +169,16 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        # Parameters with leading underscores are options, and
+        # must be sent as params, not data
+        params = {}
+        for k, v in kwargs.items():
+            if k.startswith('_'):
+                params[k] = kwargs.pop(k)
+
         r = self.session.put(
             self.wapi + objref,
+            params=params,
             data=json.dumps(kwargs)
         )
 
@@ -202,8 +219,16 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        # Parameters with leading underscores are options, and
+        # must be sent as params, not data
+        params = {}
+        for k, v in kwargs.items():
+            if k.startswith('_'):
+                params[k] = kwargs.pop(k)
+
         r = self.session.post(
             self.wapi + objref,
+            params=params,
             data=json.dumps(kwargs)
         )
 

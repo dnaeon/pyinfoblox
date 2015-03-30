@@ -138,11 +138,11 @@ class InfobloxWAPIObject(object):
 
         """
         # Parameters with leading underscores are options, and
-        # must be sent as params, not data
-        params = {}
-        for k, v in kwargs.items():
-            if k.startswith('_'):
-                params[k] = kwargs.pop(k)
+        # must be sent as params, not data.
+        # Make sure that parameters with leading underscores are
+        # also removed from kwargs as well
+        params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
+        _ = [kwargs.pop(k) for k in params]
 
         r = self.session.post(
             self.wapi + self.objtype,
@@ -170,11 +170,11 @@ class InfobloxWAPIObject(object):
 
         """
         # Parameters with leading underscores are options, and
-        # must be sent as params, not data
-        params = {}
-        for k, v in kwargs.items():
-            if k.startswith('_'):
-                params[k] = kwargs.pop(k)
+        # must be sent as params, not data.
+        # Make sure that parameters with leading underscores are
+        # also removed from kwargs as well
+        params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
+        _ = [kwargs.pop(k) for k in params]
 
         r = self.session.put(
             self.wapi + objref,
@@ -220,11 +220,11 @@ class InfobloxWAPIObject(object):
 
         """
         # Parameters with leading underscores are options, and
-        # must be sent as params, not data
-        params = {}
-        for k, v in kwargs.items():
-            if k.startswith('_'):
-                params[k] = kwargs.pop(k)
+        # must be sent as params, not data.
+        # Make sure that parameters with leading underscores are
+        # also removed from kwargs as well
+        params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
+        _ = [kwargs.pop(k) for k in params]
 
         r = self.session.post(
             self.wapi + objref,

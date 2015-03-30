@@ -139,3 +139,28 @@ Here is how to call the ``next_available_ip`` function on a
    ...     num=3
    ... )
    {u'ips': [u'192.168.1.21', u'192.168.1.22', u'192.168.1.23']}
+
+This example below calls the ``restartservices`` function on a
+``grid`` object:
+
+.. code-block:: python
+
+   >>> from __future__ import print_function
+   >>> from pyinfoblox import InfobloxWAPI
+   >>> infoblox = InfobloxWAPI(
+   ...     username='admin',
+   ...     password='p4ssw0rd',
+   ...     wapi='https://localhost/wapi/v1.1/'
+   ...)
+   >>> grids = infoblox.grid.get()
+   >>> print(grids)
+   [{'_ref': 'grid/b25lLmNsdXN0ZXIkMA:com'}]
+   >>> grid = grids[0]['_ref']
+   >>> infoblox.grid.function(
+   ...     objref=grid,
+   ...     _function='restartservices',
+   ...     member_order='SEQUENTIALLY',
+   ...     restart_option='RESTART_IF_NEEDED',
+   ...     sequential_delay=10,
+   ...     service_option='ALL'
+   ...)

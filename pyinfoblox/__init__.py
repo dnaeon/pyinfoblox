@@ -45,20 +45,23 @@ class InfobloxWAPI(object):
                  username,
                  password,
                  wapi='https://localhost/wapi/v1.1/',
+                 extattrs=False,
                  verify=False):
         """
         Create a new Infoblox WAPI instance
 
         Args:
-            username (str): Username to use for authentication
-            password (str): Password to use for authentication
-            wapi     (str): URL to the Infoblox WAPI
-            verify  (bool): Verify or not SSL certificate
+            username  (str): Username to use for authentication
+            password  (str): Password to use for authentication
+            wapi      (str): URL to the Infoblox WAPI
+            verify   (bool): Verify or not SSL certificate
+            extattrs (bool): Retrieve or not extattrs
 
         """
         self.username = username
         self.password = password
         self.wapi = wapi
+        self.extattrs = extattrs
         self.session = requests.Session()
         self.session.auth = (self.username, self.password)
         self.session.headers.update({'content-type': 'application/json'})
@@ -84,23 +87,25 @@ class InfobloxWAPI(object):
 
         return InfobloxWAPIObject(
             objtype=attr,
+            extattrs=self.extattrs,
             wapi=self.wapi,
             session=self.session
         )
 
 
 class InfobloxWAPIObject(object):
-    def __init__(self, objtype, wapi, session):
+    def __init__(self, objtype, wapi, session, extattrs):
         """
         Create a new Infoblox WAPI object class, e.g. 'network'
 
         Args:
-            objtype (str): The Infoblox object type
-            wapi    (str): URL to the Infoblox WAPI
-            session (str): A valid Infoblox WAPI session
-
+            objtype    (str): The Infoblox object type
+            wapi       (str): URL to the Infoblox WAPI
+            session    (str): A valid Infoblox WAPI session
+            extattrs  (bool): Display extattrs from source.
         """
         self.objtype = objtype
+        self.extattrs = extattrs
         self.wapi = wapi
         self.session = session
 
@@ -111,15 +116,29 @@ class InfobloxWAPIObject(object):
         Returns:
             With objref, one Infoblox object,
             in search form, a list of Infoblox objects
+            
+        Note: 
+            Can search by extattrs by creating a dict
+            ex: infoblox.network.get( extattrs = { 'Client': 'Apple' } )
 
         Raises:
             InfobloxWAPIException
 
         """
+		# Handle external args, parameters must be sent
+        # with leading asterisk
+        if kwargs['extattrs']: 
+            for k ,v in kwargs['extattrs'].items():
+                kwargs['*' +k] = v
+            del kwargs['extattrs']
+
+        # show ext attrs
+        if self.extattrs:
+            kwargs['_return_fields+'] = 'extattrs'
+
         r = self.session.get(
             self.wapi + (objref if objref is not None else self.objtype),
-            params=kwargs
-        )
+            params=kwargs)
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)
@@ -143,6 +162,10 @@ class InfobloxWAPIObject(object):
         # also removed from kwargs as well
         params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
         _ = [kwargs.pop(k) for k in params]
+
+        # show ext attrs
+        if self.extattrs:
+            params['_return_fields+'] = 'extattrs'
 
         r = self.session.post(
             self.wapi + self.objtype,
@@ -175,6 +198,10 @@ class InfobloxWAPIObject(object):
         # also removed from kwargs as well
         params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
         _ = [kwargs.pop(k) for k in params]
+
+        # show ext attrs
+        if self.extattrs:
+            params['_return_fields+'] = 'extattrs'
 
         r = self.session.put(
             self.wapi + objref,
@@ -225,6 +252,10 @@ class InfobloxWAPIObject(object):
         # also removed from kwargs as well
         params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
         _ = [kwargs.pop(k) for k in params]
+
+        # show ext attrs
+        if self.extattrs:
+            params['_return_fields+'] = 'extattrs'
 
         r = self.session.post(
             self.wapi + objref,

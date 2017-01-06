@@ -104,7 +104,7 @@ class InfobloxWAPIObject(object):
         self.wapi = wapi
         self.session = session
 
-    def get(self, objref=None, **kwargs):
+    def get(self, objref=None, timeout=None, **kwargs):
         """
         Get Infoblox objects
 
@@ -118,7 +118,7 @@ class InfobloxWAPIObject(object):
         """
         r = self.session.get(
             self.wapi + (objref if objref is not None else self.objtype),
-            params=kwargs
+            params=kwargs, timeout=timeout
         )
 
         if r.status_code != requests.codes.ok:
@@ -126,7 +126,7 @@ class InfobloxWAPIObject(object):
 
         return r.json()
 
-    def create(self, **kwargs):
+    def create(self, timeout=None, **kwargs):
         """
         Create a new Infoblox object
 
@@ -147,6 +147,7 @@ class InfobloxWAPIObject(object):
         r = self.session.post(
             self.wapi + self.objtype,
             params=params,
+            timeout=timeout,
             data=json.dumps(kwargs)
         )
 
@@ -155,7 +156,7 @@ class InfobloxWAPIObject(object):
 
         return r.json()
 
-    def update(self, objref, **kwargs):
+    def update(self, objref, timeout=None, **kwargs):
         """
         Update an Infoblox object
 
@@ -179,6 +180,7 @@ class InfobloxWAPIObject(object):
         r = self.session.put(
             self.wapi + objref,
             params=params,
+            timeout=timeout,
             data=json.dumps(kwargs)
         )
 
@@ -187,7 +189,7 @@ class InfobloxWAPIObject(object):
 
         return r.json()
 
-    def delete(self, objref):
+    def delete(self, objref, timeout=None):
         """
         Delete an Infoblox object
 
@@ -201,14 +203,14 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
-        r = self.session.delete(self.wapi + objref)
+        r = self.session.delete(self.wapi + objref, timeout=timeout)
 
         if r.status_code != requests.codes.ok:
             raise InfobloxWAPIException(r.content)
 
         return r.json()
 
-    def function(self, objref, **kwargs):
+    def function(self, objref, timeout=None, **kwargs):
         """
         Call a function on an Infoblox object
 
@@ -229,6 +231,7 @@ class InfobloxWAPIObject(object):
         r = self.session.post(
             self.wapi + objref,
             params=params,
+            timeout=timeout,
             data=json.dumps(kwargs)
         )
 

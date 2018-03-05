@@ -1,11 +1,11 @@
 pyinfoblox - Infoblox WAPI module for Python
 ============================================
 
-.. image:: https://pypip.in/version/pyinfoblox/badge.svg
+.. image:: https://img.shields.io/pypi/v/pyinfoblox.svg
     :target: https://pypi.python.org/pypi/pyinfoblox/
     :alt: Latest Version
 
-.. image:: https://pypip.in/download/pyinfoblox/badge.svg
+.. image:: https://img.shields.io/pypi/dm/pyinfoblox.svg
     :target: https://pypi.python.org/pypi/pyinfoblox/
     :alt: Downloads
 

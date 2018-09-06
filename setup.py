@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='pyinfoblox',
-      version='0.1.3',
+      version='0.1.5',
       description='Infoblox WAPI module for Python',
       long_description=open('README.rst').read(),
       author='Marin Atanasov Nikolov',

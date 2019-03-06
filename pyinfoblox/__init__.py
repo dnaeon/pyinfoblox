@@ -104,7 +104,7 @@ class InfobloxWAPIObject(object):
         self.wapi = wapi
         self.session = session
 
-    def get(self, objref=None, timeout=None, **kwargs):
+    def get(self, objref=None, timeout=None, return_fields='', **kwargs):
         """
         Get Infoblox objects
 
@@ -116,6 +116,9 @@ class InfobloxWAPIObject(object):
             InfobloxWAPIException
 
         """
+        if return_fields:
+            kwargs['_return_fields+'] = return_fields
+        
         r = self.session.get(
             self.wapi + (objref if objref is not None else self.objtype),
             params=kwargs, timeout=timeout

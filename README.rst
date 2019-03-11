@@ -86,6 +86,14 @@ Another example that will get all Infoblox ``ipv4address`` objects.
    >>> ipv4address = infoblox.ipv4address.get()
    >>> print(ipv4address)
 
+To get ``record:host`` object with all extensible attributes assigned filtered by IP address.
+
+.. code-block:: python
+
+   >>> params = {'ipv4addr': '192.168.1.1', '_return_fields+': 'extattrs'}
+   >>> host = infoblox.record_host.get(**params)
+   >>> print(host)
+
 Here is how to create a new Infoblox network:
 
 .. code-block:: python

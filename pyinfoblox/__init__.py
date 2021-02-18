@@ -96,11 +96,11 @@ class InfobloxWAPI(object):
         # colon character with underscore in your call, e.g. 'record_a'
 
         # all root objects that have children, according to WAPI v2.9
-        root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',\
-                        'dtc','dxl','grid','hsm','ipam','license','localuser',\
-                        'member','msserver','notification','nsgroup','outbound',\
-                        'parentalcontrol','record','rir','sharedrecord'\
-                        'smartfolder','tacacsplus','threatanalytics'\
+        root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',
+                        'dtc','dxl','grid','hsm','ipam','license','localuser',
+                        'member','msserver','notification','nsgroup','outbound',
+                        'parentalcontrol','record','rir','sharedrecord'
+                        'smartfolder','tacacsplus','threatanalytics'
                         'threatinsight','threatprotection']
 
         # trailing child objects that have underscores, deterministic enough \

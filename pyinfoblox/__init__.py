@@ -69,19 +69,29 @@ class InfobloxWAPI(object):
         Dynamically create a new Infoblox object class, e.g. 'network'
 
         """
-        # Special case for 'record' objects.
+        # Special case for root objects, with subobjects under them.
         #
-        # The Infoblox 'record' objects are in the following form:
+        # Infoblox objects with children are in the following form:
         #
         #     'record:<objtype>'
         #
         # For example A records in Infoblox are 'record:a' objects.
         #
-        # In order to use an Infoblox 'record' object replace the
+        # In order to use an Infoblox child-object replace the
         # colon character with underscore in your call, e.g. 'record_a'
-        if 'record' in attr:
-            attr = attr.replace('_', ':', 1)
-
+        root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',\
+                        'dtc','dxl','grid','hsm','ipam','license','localuser',\
+                        'member','msserver','notification','nsgroup','outbound',\
+                        'parentalcontrol','record','rir','sharedrecord'\
+                        'smartfolder','tacacsplus','threatanalytics'\
+                        'threatinsight','threatprotection']
+        exclusions = ['ipv4addr','ipv6addr','pool']
+        if '_' in attr:
+            if attr.split('_')[0] in root_objects\
+                    and attr.split('_')[-1] not in exclusions:
+                attr = attr.replace('_', ':')
+            
+            
         return InfobloxWAPIObject(
             objtype=attr,
             wapi=self.wapi,

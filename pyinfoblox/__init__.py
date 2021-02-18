@@ -94,6 +94,8 @@ class InfobloxWAPI(object):
         #
         # In order to use an Infoblox child-object replace the
         # colon character with underscore in your call, e.g. 'record_a'
+
+        # all root objects that have children, according to WAPI v2.9
         root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',\
                         'dtc','dxl','grid','hsm','ipam','license','localuser',\
                         'member','msserver','notification','nsgroup','outbound',\
@@ -101,14 +103,18 @@ class InfobloxWAPI(object):
                         'smartfolder','tacacsplus','threatanalytics'\
                         'threatinsight','threatprotection']
 
+        # trailing child objects that have underscores, deterministic enough \
+        # to fix with single replace
         exclusions = ['container','ipv4addr','ipv6addr','pool']
 
         if '_' in attr:
             if attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] not in exclusions:
-                attr = attr.replace('_', ':')
+                # catch all with no underscores
+                attr = attr.replace('_', ':') 
             elif attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] in exclusions:
+                # catch all with underscores
                 attr = attr.replace('_', ':', 1)
 
         return InfobloxWAPIObject(

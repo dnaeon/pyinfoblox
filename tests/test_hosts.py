@@ -1,5 +1,4 @@
 from tests import BaseTestCase
-from urllib3.exceptions import InsecureRequestWarning # pylint: disable=import-error,no-member
 
 """
 TODO: 
@@ -16,7 +15,7 @@ class TestHostCases(BaseTestCase):
             extattrs (dict): The extensible attributes on the host
             aliases (list): Host record aliases
         Returns:
-            res (dict): The reponse dict
+            res (dict): The response dict
         """
         res = self.infoblox.record_host.create(**kwargs)
         return res
@@ -26,7 +25,7 @@ class TestHostCases(BaseTestCase):
         Args:
             fqdn (str): The host fqdn to delete
         Returns:
-            res (dict): The reponse dict
+            res (dict): The response dict
         """
         host = self.get_host(fqdn)
         objref = host[0]['_ref']
@@ -78,7 +77,7 @@ class TestHostCases(BaseTestCase):
             fqdn (str): The host fqdn to post
             ip_address (str): The host ip address to post
         Returns:
-            res (dict): The reponse dict
+            res (dict): The response dict
         """
         fqdn = self.host_base['name']
         host = self.get_host(fqdn)

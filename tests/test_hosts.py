@@ -1,8 +1,11 @@
-import sys
-import unittest
-sys.path.append('../')
 from tests import BaseTestCase
+from urllib3.exceptions import InsecureRequestWarning # pylint: disable=import-error,no-member
 
+"""
+TODO: 
+- Add search tests
+- Add VCR
+""" 
 class TestHostCases(BaseTestCase):
 
     def create_host(self, **kwargs):
@@ -43,6 +46,21 @@ class TestHostCases(BaseTestCase):
                                             _return_fields=self.return_fields)
         return res
 
+    def get_next_address(self, subnet):
+        """Helper func for get_next_ip
+        Args:
+            subnet (str): The parent network to get an IP from
+        Returns:
+            ip (str): The IP address
+        """
+        net_data = self.network_base
+        create_net_res = self.infoblox.network.create(**net_data)
+        network = self.infoblox.network.get(network=net_data['network'])
+        objref = network[0]['_ref']
+        addresses = self.infoblox.network.function(objref, _function='next_available_ip', num=1)
+        ip = addresses['ips'][0]
+        return ip
+
     def search_host(self, **kwargs):
         """Helper func to search hosts
         Args:
@@ -73,29 +91,30 @@ class TestHostCases(BaseTestCase):
         """
         test creating a new host
         and the response is 201
-        ande the response body is correct
+        and the response body is correct
         """
         fqdn = self.host_base['name']
 
         create_res = self.create_host(**self.host_base)
         host_res = self.get_host(fqdn)
-        self.delete_host(fqdn)
+
         assert 'record:host' in create_res
         assert(host_res[0]['name'] == self.host_base['name'])
         assert(host_res[0]['aliases'] == self.host_base['aliases'])
         assert(host_res[0]['extattrs'] == self.host_base['extattrs'])
         assert(host_res[0]['ipv4addrs'][0]['ipv4addr'] == self.host_base['ipv4addrs'][0]['ipv4addr'])
 
-    def test_get_host(self):
+    def test_create_host_next_available_ip(self):
         """
-        test getting a new host
-        and the response is 200
-        ande the response body is correct
+        test creating a host with get_next_ip function
+        and the response body is correct
         """
         fqdn = self.host_base['name']
+        subnet = self.network_base['network']
+        self.host_base['ipv4addrs'][0]['ipv4addr'] = self.get_next_address(subnet)
         create_res = self.create_host(**self.host_base)
         host_res = self.get_host(fqdn)
-        self.delete_host(fqdn)
+
         assert 'record:host' in create_res
         assert(host_res[0]['name'] == self.host_base['name'])
         assert(host_res[0]['aliases'] == self.host_base['aliases'])
@@ -112,11 +131,26 @@ class TestHostCases(BaseTestCase):
         create_res = self.create_host(**self.host_base)
         del_res = self.delete_host(fqdn)
         host_res = self.get_host(fqdn)
+
         assert 'record:host' in del_res
         assert host_res == []
 
-        
+    def test_get_host(self):
+        """
+        test getting a new host
+        and the response is 200
+        ande the response body is correct
+        """
+        fqdn = self.host_base['name']
+        create_res = self.create_host(**self.host_base)
+        host_res = self.get_host(fqdn)
 
+        assert 'record:host' in create_res
+        assert(host_res[0]['name'] == self.host_base['name'])
+        assert(host_res[0]['aliases'] == self.host_base['aliases'])
+        assert(host_res[0]['extattrs'] == self.host_base['extattrs'])
+        assert(host_res[0]['ipv4addrs'][0]['ipv4addr'] == self.host_base['ipv4addrs'][0]['ipv4addr'])
+      
     def test_update_host(self):
         """
         test updating a new host
@@ -124,6 +158,7 @@ class TestHostCases(BaseTestCase):
         ande the response body is correct
         """
         fqdn = self.host_base_update['name']
+
         create_res = self.create_host(**self.host_base)
         update_res = self.update_host(**self.host_base_update)
         host_res = self.get_host(fqdn)
@@ -133,3 +168,13 @@ class TestHostCases(BaseTestCase):
         assert(host_res[0]['aliases'] == self.host_base_update['aliases'])
         assert(host_res[0]['extattrs'] == self.host_base_update['extattrs'])
         assert(host_res[0]['ipv4addrs'][0]['ipv4addr'] == self.host_base_update['ipv4addrs'][0]['ipv4addr'])
+
+
+    def teardown_method(self, method):
+        fqdn = self.host_base['name']
+        network = self.network_base['network']
+        if self.get_host(fqdn):
+            self.delete_host(fqdn)
+        if self.infoblox.network.get(network=network):
+            objref = self.infoblox.network.get(network=network)[0]['_ref']
+            self.infoblox.network.delete(objref=objref)

@@ -1,0 +1,23 @@
+{"allow_update": [
+    {
+        "_struct": "addressac",
+        "address": "10.16.0.0/14",
+        "permission": "ALLOW"
+    },
+    {
+        "_struct": "addressac",
+        "address": "10.4.0.2",
+        "permission": "ALLOW"
+    },
+    {
+        "_struct": "addressac",
+        "address": "10.4.0.1",
+        "permission": "DENY"
+    },
+    {
+        "_struct": "addressac",
+        "address": "10.16.0.0/14",
+        "permission": "DENY"
+    }
+    ]
+}

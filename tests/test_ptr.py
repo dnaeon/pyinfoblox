@@ -2,7 +2,6 @@ from tests import BaseTestCase
 
 """
 TODO: 
-- Add search tests
 - Add VCR
 """ 
 class TestPtrCases(BaseTestCase):
@@ -160,8 +159,13 @@ class TestPtrCases(BaseTestCase):
         assert(ptr_res[0]['ptrdname'] == self.ptr_base_update['ptrdname'])
         assert(ptr_res[0]['extattrs'] == self.ptr_base_update['extattrs'])
         assert(ptr_res[0]['ipv4addr'] == self.ptr_base_update['ipv4addr'])
+    
+    def setup_method(self, method):
+        self.infoblox.network.create(**self.network_base)
 
     def teardown_method(self, method):
+        objref = self.infoblox.network.get(network=self.network_base['network'])[0]['_ref']
+        self.infoblox.network.delete(objref=objref)
         fqdn = self.ptr_base['ptrdname']
         if self.get_ptr(fqdn):
             self.delete_ptr(fqdn)

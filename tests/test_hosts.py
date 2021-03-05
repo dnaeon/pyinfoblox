@@ -2,7 +2,6 @@ from tests import BaseTestCase
 
 """
 TODO: 
-- Add search tests
 - Add VCR
 """ 
 class TestHostCases(BaseTestCase):
@@ -167,7 +166,12 @@ class TestHostCases(BaseTestCase):
         assert(host_res[0]['extattrs'] == self.host_base_update['extattrs'])
         assert(host_res[0]['ipv4addrs'][0]['ipv4addr'] == self.host_base_update['ipv4addrs'][0]['ipv4addr'])
 
+    def setup_method(self, method):
+        self.infoblox.network.create(**self.network_base)
+
     def teardown_method(self, method):
+        objref = self.infoblox.network.get(network=self.network_base['network'])[0]['_ref']
+        self.infoblox.network.delete(objref=objref)
         fqdn = self.host_base['name']
         if self.get_host(fqdn):
             self.delete_host(fqdn)

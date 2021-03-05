@@ -53,7 +53,6 @@ class TestHostCases(BaseTestCase):
             ip (str): The IP address
         """
         net_data = self.network_base
-        create_net_res = self.infoblox.network.create(**net_data)
         network = self.infoblox.network.get(network=net_data['network'])
         objref = network[0]['_ref']
         addresses = self.infoblox.network.function(objref, _function='next_available_ip', num=1)
@@ -168,12 +167,7 @@ class TestHostCases(BaseTestCase):
         assert(host_res[0]['extattrs'] == self.host_base_update['extattrs'])
         assert(host_res[0]['ipv4addrs'][0]['ipv4addr'] == self.host_base_update['ipv4addrs'][0]['ipv4addr'])
 
-
     def teardown_method(self, method):
         fqdn = self.host_base['name']
-        network = self.network_base['network']
         if self.get_host(fqdn):
             self.delete_host(fqdn)
-        if self.infoblox.network.get(network=network):
-            objref = self.infoblox.network.get(network=network)[0]['_ref']
-            self.infoblox.network.delete(objref=objref)

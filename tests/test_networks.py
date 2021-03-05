@@ -130,6 +130,14 @@ class TestNetworkCases(BaseTestCase):
         assert(network_res[0]['extattrs'] == self.network_base_update['extattrs'])
         assert(network_res[0]['comment'] == self.network_base_update['comment'])
 
+    def setup_method(self, method):
+        network = self.network_base['network']
+        if self.infoblox.network.get(network=network) == []:
+            self.infoblox.network.create(network=network)
+        else:
+            objref = self.infoblox.network.get(network=network)[0]['_ref']
+            self.infoblox.network.delete(objref=objref)
+
     def teardown_method(self, method):
         network = self.network_base['network']
         if self.get_network(network):

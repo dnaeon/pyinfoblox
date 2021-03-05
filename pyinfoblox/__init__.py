@@ -85,11 +85,16 @@ class InfobloxWAPI(object):
                         'parentalcontrol','record','rir','sharedrecord'\
                         'smartfolder','tacacsplus','threatanalytics'\
                         'threatinsight','threatprotection']
-        exclusions = ['ipv4addr','ipv6addr','pool']
+
+        exclusions = ['container','ipv4addr','ipv6addr','pool']
+        
         if '_' in attr:
             if attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] not in exclusions:
                 attr = attr.replace('_', ':')
+            elif attr.split('_')[0] in root_objects\
+                    and attr.split('_')[-1] in exclusions:
+                attr = attr.replace('_', ':', 1)
             
             
         return InfobloxWAPIObject(

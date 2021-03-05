@@ -31,7 +31,6 @@ import json
 
 import requests
 
-
 class InfobloxWAPIException(Exception):
     """
     Generic Infoblox WAPI Exception
@@ -96,12 +95,15 @@ class InfobloxWAPI(object):
         # colon character with underscore in your call, e.g. 'record_a'
 
         # all root objects that have children, according to WAPI v2.9
-        root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',
-                        'dtc','dxl','grid','hsm','ipam','license','localuser',
-                        'member','msserver','notification','nsgroup','outbound',
-                        'parentalcontrol','record','rir','sharedrecord'
-                        'smartfolder','tacacsplus','threatanalytics'
-                        'threatinsight','threatprotection']
+        root_objects_res = self.session.get(self.wapi,
+                                            params='_schema').json()['supported_objects']
+        root_objects = sorted(set([x.split(':')[0] for x in root_objects_res if ':' in x]))
+        # root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',
+        #                 'dtc','dxl','grid','hsm','ipam','license','localuser',
+        #                 'member','msserver','notification','nsgroup','outbound',
+        #                 'parentalcontrol','record','rir','sharedrecord'
+        #                 'smartfolder','tacacsplus','threatanalytics'
+        #                 'threatinsight','threatprotection']
 
         # trailing child objects that have underscores, deterministic enough \
         # to fix with single replace
@@ -226,7 +228,6 @@ class InfobloxWAPIObject(object):
         # also removed from kwargs as well
         params = {k:kwargs[k] for k in kwargs if k.startswith('_')}
         _ = [kwargs.pop(k) for k in params]
-
         r = self.session.put(
             self.wapi + objref,
             params=params,

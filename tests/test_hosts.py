@@ -40,9 +40,9 @@ class TestHostCases(BaseTestCase):
         Returns:
             res (dict): The response dict
         """
-        self.return_fields = "name,ipv4addrs,aliases,extattrs"
+        return_fields = "name,ipv4addrs,aliases,extattrs"
         res = self.infoblox.record_host.get(name=fqdn,
-                                            _return_fields=self.return_fields)
+                                            _return_fields=return_fields)
         return res
 
     def get_next_address(self, subnet):

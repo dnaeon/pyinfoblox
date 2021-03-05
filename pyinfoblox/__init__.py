@@ -97,6 +97,7 @@ class InfobloxWAPI(object):
         # all root objects that have children, according to WAPI v2.9
         root_objects_res = self.session.get(self.wapi,
                                             params='_schema').json()['supported_objects']
+
         root_objects = sorted(set([x.split(':')[0] for x in root_objects_res if ':' in x]))
         # root_objects = ['certificate','ciscoise','ddns','dhcp','discovery',
         #                 'dtc','dxl','grid','hsm','ipam','license','localuser',
@@ -112,11 +113,12 @@ class InfobloxWAPI(object):
         if '_' in attr:
             if attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] not in exclusions:
-                # catch all with no underscores
-                attr = attr.replace('_', ':') 
+                # catch all with no underscores in ending object
+                attr = attr.replace('_', ':')
             elif attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] in exclusions:
-                # catch all with underscores
+                # catch all with underscores in ending object, 
+                # e.g. record:host_ipv4addrs
                 attr = attr.replace('_', ':', 1)
 
         return InfobloxWAPIObject(

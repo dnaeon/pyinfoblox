@@ -18,6 +18,10 @@ class BaseTestCase(TestCase):
             self.a_base = json.load(jsonfile)
         with open('./tests/test_data/a_update.json') as jsonfile:
             self.a_base_update = json.load(jsonfile)
+        with open('./tests/test_data/ddns_ace_list.json') as jsonfile:
+            self.ddns_ace_base = json.load(jsonfile)
+        with open('./tests/test_data/ddns_ace_list_update.json') as jsonfile:
+            self.ddns_ace_base_update = json.load(jsonfile)
         with open('./tests/test_data/host.json') as jsonfile:
             self.host_base = json.load(jsonfile)
         with open('./tests/test_data/host_update.json') as jsonfile:
@@ -34,7 +38,3 @@ class BaseTestCase(TestCase):
             self.ptr_base = json.load(jsonfile)
         with open('./tests/test_data/ptr_update.json') as jsonfile:
             self.ptr_base_update = json.load(jsonfile)
-        
-        network = self.network_base['network']
-        if self.infoblox.network.get(network=network) == []:
-            self.infoblox.network.create(network=network)

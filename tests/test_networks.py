@@ -2,7 +2,6 @@ from ipaddress import IPv4Network
 from tests import BaseTestCase
 """
 TODO: 
-- Add search tests
 - Add next_available
 - Add VCR
 """ 
@@ -41,7 +40,6 @@ class TestNetworkCases(BaseTestCase):
         Returns:
             res (dict): The response dict
         """
-        network = self.network_base['network']
         return_fields = "network,comment,extattrs"
         res = self.infoblox.network.get(network=network,
                                         _return_fields=return_fields)
@@ -130,15 +128,7 @@ class TestNetworkCases(BaseTestCase):
         assert(network_res[0]['extattrs'] == self.network_base_update['extattrs'])
         assert(network_res[0]['comment'] == self.network_base_update['comment'])
 
-    def setup_method(self, method):
-        network = self.network_base['network']
-        if self.infoblox.network.get(network=network) == []:
-            self.infoblox.network.create(network=network)
-        else:
-            objref = self.infoblox.network.get(network=network)[0]['_ref']
-            self.infoblox.network.delete(objref=objref)
-
     def teardown_method(self, method):
         network = self.network_base['network']
-        if self.get_network(network):
+        if self.get_network(network) != []:
             self.delete_network(network)

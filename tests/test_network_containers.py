@@ -1,7 +1,6 @@
 from tests import BaseTestCase
 """
 TODO: 
-- Add search tests
 - Add next_available
 - Add VCR
 """ 

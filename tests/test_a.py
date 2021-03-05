@@ -2,7 +2,6 @@ from tests import BaseTestCase
 
 """
 TODO: 
-- Add search tests
 - Add VCR
 """ 
 class TestACases(BaseTestCase):
@@ -69,7 +68,7 @@ class TestACases(BaseTestCase):
         Returns:
             res (str): The response object string
         """
-        res = self.infoblox.record_a.get(**kwargs)
+        res = self.get_a(**kwargs)
         return res
 
     def update_a(self, **kwargs):
@@ -165,7 +164,12 @@ class TestACases(BaseTestCase):
         assert(a_res[0]['extattrs'] == self.a_base_update['extattrs'])
         assert(a_res[0]['ipv4addr'] == self.a_base_update['ipv4addr'])
 
+    def setup_method(self, method):
+        self.infoblox.network.create(**self.network_base)
+
     def teardown_method(self, method):
+        objref = self.infoblox.network.get(network=self.network_base['network'])[0]['_ref']
+        self.infoblox.network.delete(objref=objref)
         fqdn = self.a_base['name']
         if self.get_a(fqdn):
             self.delete_a(fqdn)

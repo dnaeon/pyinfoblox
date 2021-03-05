@@ -1,7 +1,8 @@
 {
     "name": "pyinfoblox-test-host.starbucks.net",
     "ipv4addrs": [{"ipv4addr":"10.13.212.12"}],
-    "aliases": ["pyinfoblox-test-host-alias.starbucks.net"],
+    "aliases": ["pyinfoblox-test-host-alias.starbucks.net",
+                "pyinfoblox-test-host-alias-2.starbucks.net"],
     "extattrs": 
     {
         "fgid": 

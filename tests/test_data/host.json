@@ -1,0 +1,12 @@
+{
+    "name": "pyinfoblox-test-host.localhost.int",
+    "ipv4addrs": ["192.168.1.169"],
+    "aliases": ["pyinfoblox-test-host-alias.localhost.int"],
+    "extattrs": 
+    {
+        "aKey": 
+        {
+            "value": "a_value"
+        }
+    }
+}

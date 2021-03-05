@@ -41,6 +41,9 @@ class InfobloxWAPIException(Exception):
 
 
 class InfobloxWAPI(object):
+    """
+    Abstracted, generic implementation of an Infoblox Object and connector
+    """
     def __init__(self,
                  username,
                  password,
@@ -55,6 +58,12 @@ class InfobloxWAPI(object):
             wapi     (str): URL to the Infoblox WAPI
             verify  (bool): Verify or not SSL certificate
 
+        Attributes:
+            username (str): Username to use for authentication
+            password (str): Password to use for authentication
+            wapi     (str): URL to the Infoblox WAPI
+            verify  (bool): Verify or not SSL certificate
+            session  (obj): Session connector and auth
         """
         self.username = username
         self.password = password
@@ -67,6 +76,12 @@ class InfobloxWAPI(object):
     def __getattr__(self, attr):
         """
         Dynamically create a new Infoblox object class, e.g. 'network'
+
+        Args:
+            attr (str): The WAPI Object name that's requested
+
+        Returns:
+            InfobloxWAPIObject (obj): The Infoblox Object session output/payload
 
         """
         # Special case for root objects, with subobjects under them.
@@ -87,7 +102,7 @@ class InfobloxWAPI(object):
                         'threatinsight','threatprotection']
 
         exclusions = ['container','ipv4addr','ipv6addr','pool']
-        
+
         if '_' in attr:
             if attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] not in exclusions:
@@ -95,8 +110,7 @@ class InfobloxWAPI(object):
             elif attr.split('_')[0] in root_objects\
                     and attr.split('_')[-1] in exclusions:
                 attr = attr.replace('_', ':', 1)
-            
-            
+
         return InfobloxWAPIObject(
             objtype=attr,
             wapi=self.wapi,
@@ -105,6 +119,9 @@ class InfobloxWAPI(object):
 
 
 class InfobloxWAPIObject(object):
+    """
+    The Infoblox Object instantiation with CRUD operators
+    """
     def __init__(self, objtype, wapi, session):
         """
         Create a new Infoblox WAPI object class, e.g. 'network'
@@ -122,6 +139,12 @@ class InfobloxWAPIObject(object):
     def get(self, objref=None, timeout=None, **kwargs):
         """
         Get Infoblox objects
+
+        Args:
+            objref (str, optional): The _ref/object reference of the \
+                                    InfobloxObject for PUT operations
+            timeout (int, optional): The request timeout
+            **kwargs: Keyword Arguments, unpacked
 
         Returns:
             With objref, one Infoblox object,
@@ -144,6 +167,10 @@ class InfobloxWAPIObject(object):
     def create(self, timeout=None, **kwargs):
         """
         Create a new Infoblox object
+
+        Args:
+            timeout (int, optional): The request timeout
+            **kwargs: Keyword Arguments, unpacked
 
         Returns:
             The object reference of the newly created object
@@ -177,6 +204,8 @@ class InfobloxWAPIObject(object):
 
         Args:
             objref (str): Infoblox object reference
+            timeout (int, optional): The request timeout
+            **kwargs: Keyword Arguments, unpacked
 
         Returns:
             The object reference of the updated object
@@ -210,6 +239,7 @@ class InfobloxWAPIObject(object):
 
         Args:
             objref (str): Infoblox object reference
+            timeout (int, optional): The request timeout
 
         Returns:
             The reference of the deleted object
@@ -231,6 +261,8 @@ class InfobloxWAPIObject(object):
 
         Args:
             objref (str): Infoblox object reference
+            timeout (int, optional): The request timeout
+            **kwargs: Keyword Arguments, unpacked
 
         Raises:
             InfobloxWAPIException

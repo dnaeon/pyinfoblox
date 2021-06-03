@@ -1,7 +1,6 @@
 import json
-import unittest
-from os import getenv
 from unittest import TestCase
+from os import getenv
 from pyinfoblox import InfobloxWAPI
 
 class BaseTestCase(TestCase):

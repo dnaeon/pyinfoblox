@@ -106,7 +106,7 @@ class InfobloxWAPI(object):
         #                 'smartfolder','tacacsplus','threatanalytics'
         #                 'threatinsight','threatprotection']
 
-        # trailing child objects that have underscores, deterministic enough \
+        # trailing child objects that have underscores, deterministic enough
         # to fix with single replace
         exclusions = ['container','ipv4addr','ipv6addr','pool']
 

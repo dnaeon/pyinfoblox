@@ -1,0 +1,12 @@
+{
+    "name": "pyinfoblox-test-host.starbucks.net",
+    "ipv4addrs": [{"ipv4addr":"10.4.0.1"}],
+    "aliases": ["pyinfoblox-test-host-alias.starbucks.net"],
+    "extattrs": 
+    {
+        "fgid": 
+        {
+            "value": "00504"
+        }
+    }
+}

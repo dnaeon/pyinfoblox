@@ -1,0 +1,11 @@
+{
+    "name": "pyinfoblox-test-host.starbucks.net",
+    "ipv4addr":"10.4.0.4",
+    "extattrs": 
+    {
+        "fgid": 
+        {
+            "value": "00504"
+        }
+    }
+}

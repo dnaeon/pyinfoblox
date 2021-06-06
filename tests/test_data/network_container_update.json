@@ -1,0 +1,5 @@
+{
+    "network": "10.4.0.0/22",
+    "comment": "Test comment updated",
+    "extattrs": {"fgid": {"value": "00504"}}
+}
